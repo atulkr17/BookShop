@@ -1,0 +1,444 @@
+{% load static %}
+{% load mathfilters %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="format-detection" content="telephone=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="author" content="">
+	<meta name="keywords" content="">
+	<meta name="description" content="">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+	<link rel="stylesheet" type="text/css" href="{% static 'myBooks/css/normalize.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'myBooks/icomoon/icomoon.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'myBooks/css/vendor.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'myBooks/css/style.css' %}">
+	<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+	<title>BookSaw - Free Book Store HTML CSS Template</title>
+	
+</head>
+
+<body data-bs-spy="scroll" data-bs-target="#header" tabindex="0">
+
+	<div id="header-wrap">
+
+		<div class="top-content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="social-links">
+							<ul>
+								<li>
+									<a href="#"><i class="icon icon-facebook"></i></a>
+								</li>
+								<li>
+									<a href="#"><i class="icon icon-twitter"></i></a>
+								</li>
+								<li>
+									<a href="#"><i class="icon icon-youtube-play"></i></a>
+								</li>
+								<li>
+									<a href="#"><i class="icon icon-behance-square"></i></a>
+								</li>
+							</ul>
+						</div><!--social-links-->
+					</div>
+					<div class="col-md-6">
+						<div class="right-element">
+							<div class="dropdown" style="display: inline-block;">
+								<button class="for-buy " type="button" id="accountDropdown" data-bs-toggle="dropdown" aria-expanded="false"
+								style="background-color:primary;  margin-top: 0%; margin-bottom: 0%;">
+									{% if x == 1 %}
+									<img src="{% static 'myBooks/images/profile.png' %}" alt="profile" style="border-radius: 50%; width: 40px;">
+									{% else %}
+									<i class="icon icon-user"></i><span>Account</span>
+									{% endif %}
+								</button>
+								<ul class="dropdown-menu" aria-labelledby="accountDropdown">
+									{% if x == 1 %}
+									<li><a class="dropdown-item" href="signout">Signout</a></li>
+									<li><a class="dropdown-item" href="order/">Orders</a></li>
+									<li><a class="dropdown-item" href="profile">Profile</a></li>
+									{% else %}
+									<li><a class="dropdown-item" href="signup">Signup</a></li>
+									{% endif %}
+								</ul>
+							</div>
+							<a href="allcart" class="cart for-buy"><i class="icon icon-clipboard "></i><span style=>Cart:(0 $)</span></a>
+							<div class="action-menu">
+                                <div class="search-bar">
+                                    <a href="#" class="search-button search-toggle" data-selector="#header-wrap">
+                                        <i class="icon icon-search"></i>
+                                    </a>
+                                    <form action="{% url 'search_results' %}"  method="GET" class="search-box" style="display: inline;">
+										<input class="search-field text search-input" name="q" placeholder="Search" type="text">
+										<!--<button type="submit" class="btn btn-transparent search-button"><i class="icon icon-search"></i></button>-->
+									</form>
+                                </div>
+                            </div>
+							
+						</div><!--top-right-->
+					</div>
+
+				</div>
+			</div>
+		</div><!--top-content-->
+
+		<header id="header">
+			<div class="container-fluid">
+				<div class="row">
+
+					<div class="col-md-2">
+						<div class="main-logo">
+							<a href="index.html"><img src="{% static 'myBooks/images/main-logo.png' %}" alt="logo"></a>
+						</div>
+
+					</div>
+
+					<div class="col-md-10">
+
+						<nav id="navbar">
+							<div class="main-menu stellarnav">
+								<ul class="menu-list">
+                                    <li class="menu-item "><a href="/">Home</a></li>
+                                    
+                                    <li class="menu-item "><a href="../../allprod/" class="nav-link">Our Store</a></li>
+                                    <li class="menu-item"><a href="../../contact/" class="nav-link">Contact</a></li>
+									<li class="menu-item active"><a href="../../allcart" class="nav-link">Cart Items</a></li>
+                                    
+
+                                </ul>
+
+
+								<div class="hamburger">
+									<span class="bar"></span>
+									<span class="bar"></span>
+									<span class="bar"></span>
+								</div>
+
+							</div>
+						</nav>
+
+					</div>
+
+				</div>
+			</div>
+		</header>
+
+	</div><!--header-wrap-->
+    <section class="h-100 h-custom">
+		<div class="container h-100 py-5">
+			<div class="row d-flex justify-content-center align-items-center h-100">
+				<div class="col">
+					<div class="table-responsive">
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col" class="h5">Shopping Bag</th>
+									<th scope="col">Quantity</th>
+									<th scope="col">Price</th>
+									<th scope="col">Total Price</th>
+									<th scope="col"></th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for item in cart_items %}
+								<tr>
+									<th scope="row">
+										<div class="d-flex align-items-center">
+											<img src="media/{{item.product.image}}" class="img-fluid rounded-3"
+												style="width: 120px;" alt="Book">
+											<div class="flex-column ms-4">
+												<p class="mb-2">{{item.product.name}}</p>
+												<p class="mb-0">{{item.product.author}}</p>
+											</div>
+										</div>
+									</th>
+									<td class="align-middle">
+										<div class="d-flex flex-row">
+											<a href="rm_to_cart/{{item.product.p_id}}">
+											<button class="btn btn-link px-2 minus-btn"
+												onclick="decreaseQuantity('{{ item.product.p_id }}')">
+												<b>-</b>
+											</button>
+										</a>
+											<input id="quantity_{{ item.product.p_id }}" min="0" name="quantity"
+												value="{{ item.quantity }}" type="number"
+												class="form-control form-control-sm" style="width: 50px;" />
+												<a href="add_to_cart/{{item.product.p_id}}">
+											<button class="btn btn-link px-2 plus-btn"
+												onclick="increaseQuantity('{{ item.product.p_id }}')">
+												<b>+</b>
+											</button>
+										</a> 
+										</div>
+									</td>
+									<td class="align-middle">
+										<p class="mb-0" style="font-weight: 500;">{{item.product.price}}</p>
+									</td>
+									<td class="align-middle border-bottom-0">
+										<p class="mb-0" style="font-weight: 500;">{{item.product.price|mul:item.quantity}}</p>
+									</td>
+									<td class="align-middle"><a href="/remove_cart/{{item.id}}">Remove</a></td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<div class="card shadow-2-strong mb-5 mb-lg-0" style="border-radius: 16px;">
+						<div class="card-body">
+							<table class="col-md-12">
+								<td colspan="5">
+									<hr class="my-4">
+									<div class="d-flex justify-content-between mb-4" style="font-weight: 500;">
+										<p class="mb-2">Total (tax included)</p>
+										<p class="mb-2">{{total_price}}</p>
+									</div>
+								</td>
+								<td colspan="5">
+									<form id="payment-form">
+										{% csrf_token %}
+										<textarea name="address" id="address" cols="30" rows="3"
+											class="form-control" placeholder="Enter Delivery Address"></textarea>
+										<input type="hidden" id="amount" name="amount" value="{{ total_price }}">
+										<button type="button" id="pay-button" class="btn btn-primary">Pay Now</button>
+									</form>
+								</td>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	
+	
+
+
+
+
+
+
+    <footer id="footer">
+		<div class="container">
+			<div class="row">
+
+				<div class="col-md-4">
+
+					<div class="footer-item">
+						<div class="company-brand">
+							<img src="{% static 'myBooks/images/main-logo.png' %}" alt="logo" class="footer-logo">
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sagittis sed ptibus liberolectus
+								nonet psryroin. Amet sed lorem posuere sit iaculis amet, ac urna. Adipiscing fames
+								semper erat ac in suspendisse iaculis.</p>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="col-md-2">
+
+					<div class="footer-menu">
+						<h5>About Us</h5>
+						<ul class="menu-list">
+							<li class="menu-item">
+								<a href="#">vision</a>
+							</li>
+							<li class="menu-item">
+								<a href="#">articles </a>
+							</li>
+							<li class="menu-item">
+								<a href="#">careers</a>
+							</li>
+							<li class="menu-item">
+								<a href="#">service terms</a>
+							</li>
+							<li class="menu-item">
+								<a href="#">donate</a>
+							</li>
+						</ul>
+					</div>
+
+				</div>
+				<div class="col-md-2">
+
+					<div class="footer-menu">
+						<h5>Discover</h5>
+						<ul class="menu-list">
+							<li class="menu-item">
+								<a href="#">Home</a>
+							</li>
+							<li class="menu-item">
+								<a href="#">Books</a>
+							</li>
+							<li class="menu-item">
+								<a href="#">Authors</a>
+							</li>
+							<li class="menu-item">
+								<a href="#">Subjects</a>
+							</li>
+							<li class="menu-item">
+								<a href="#">Advanced Search</a>
+							</li>
+						</ul>
+					</div>
+
+				</div>
+				<div class="col-md-2">
+
+					<div class="footer-menu">
+						<h5>My account</h5>
+						<ul class="menu-list">
+							<li class="menu-item">
+								<a href="#">Sign In</a>
+							</li>
+							<li class="menu-item">
+								<a href="#">View Cart</a>
+							</li>
+							<li class="menu-item">
+								<a href="#">My Wishtlist</a>
+							</li>
+							<li class="menu-item">
+								<a href="#">Track My Order</a>
+							</li>
+						</ul>
+					</div>
+
+				</div>
+				<div class="col-md-2">
+
+					<div class="footer-menu">
+						<h5>Help</h5>
+						<ul class="menu-list">
+							<li class="menu-item">
+								<a href="#">Help center</a>
+							</li>
+							<li class="menu-item">
+								<a href="#">Report a problem</a>
+							</li>
+							<li class="menu-item">
+								<a href="#">Suggesting edits</a>
+							</li>
+							<li class="menu-item">
+								<a href="#">Contact us</a>
+							</li>
+						</ul>
+					</div>
+
+				</div>
+
+			</div>
+			<!-- / row -->
+
+		</div>
+	</footer>
+
+	<div id="footer-bottom">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+
+					<div class="copyright">
+						<div class="row">
+
+							<div class="col-md-6">
+								<p>© 2022 All rights reserve</p>
+							</div>
+
+							<div class="col-md-6">
+								<div class="social-links align-right">
+									<ul>
+										<li>
+											<a href="#"><i class="icon icon-facebook"></i></a>
+										</li>
+										<li>
+											<a href="#"><i class="icon icon-twitter"></i></a>
+										</li>
+										<li>
+											<a href="#"><i class="icon icon-youtube-play"></i></a>
+										</li>
+										<li>
+											<a href="#"><i class="icon icon-behance-square"></i></a>
+										</li>
+									</ul>
+								</div>
+							</div>
+
+						</div>
+					</div><!--grid-->
+
+				</div><!--footer-bottom-content-->
+			</div>
+		</div>
+	</div>
+
+	<script src="{% static 'myBooks/js/jquery-1.11.0.min.js' %}"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+		crossorigin="anonymous"></script>
+	<script src="{% static 'myBooks/js/plugins.js' %}"></script>
+	<script src="{% static 'myBooks/js/script.js' %}"></script>
+	<script>
+		$(document).ready(function() {
+			$("#pay-button").click(function(e) {
+				e.preventDefault(); // Prevent the default form submission
+				
+				// Get the amount entered by the user
+				const amount = $("#amount").val();
+				const address=$("#address").val();
+	
+				// Make an AJAX request to initiate the payment
+				$.ajax({
+					type: "POST",
+					url: "/initiate-payment/",
+					data: { amount: amount, address:address },
+					dataType: "json",
+					beforeSend: function(xhr) {
+						xhr.setRequestHeader("X-CSRFToken", $("[name=csrfmiddlewaretoken]").val());
+					},
+					success: function(data) {
+						// Initialize Razorpay Checkout with the received values
+						const options = {
+							key: data.key,
+							amount: data.amount,
+							currency: data.currency,
+							order_id: data.id,
+							name: data.name,
+							description: data.description,
+							image: data.image,
+							handler: function(response) {
+								// Handle the payment success or failure and redirect accordingly
+								if (response.razorpay_payment_id) {
+									// Payment successful, redirect to the success URL
+									window.location.href = "/payment-success/";
+								} else {
+									// Payment failed or canceled, redirect to the failure URL
+									window.location.href = "/payment-failed/";
+								}
+							},
+							prefill: {
+								name: "Card Holder Name",
+							},
+						};
+	
+						const rzp = new Razorpay(options);
+						rzp.open();
+					},
+					error: function(error) {
+						console.error("Error initiating payment:", error);
+					}
+				});
+			});
+		});
+	</script>
+	
+</body>
+
+</html>

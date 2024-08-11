@@ -1,0 +1,139 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="{% static 'myBooks/css/signup.css' %}">
+	
+</head>
+ <body>
+	
+
+
+    <div id="container" class="container">
+		<!-- FORM SECTION -->
+		
+
+		<div class="row">
+			<!-- SIGN UP -->
+			
+			<div class="col align-items-center flex-col sign-up">
+				<div class="form-wrapper align-items-center">
+					<form name="frm" method="post" class="form sign-up" novalidate>
+						{% csrf_token %}
+						<table class="input-group " >
+							{% for frm in form %}
+							<tr>
+								<td style="padding: 0.5%;">{{frm}}</td>
+								<td>&nbsp;<span style="color: red; font-size: 70%;">{{frm.errors|striptags}}</span></td>
+							</tr>
+							{% endfor %}
+							<tr>
+								<td colspan="3"><button style="margin-top: 5%;" name="register" type="submit" >Register</buttom></td>
+							</tr>
+						</table>
+						{% if messages %}
+						{% for msg in messages %}
+						{{msg}}
+						
+						{% endfor %}
+						{% endif %}
+						<p>
+							<span>
+								Already have an account?
+							</span>
+							<b onclick="toggle()" class="pointer">
+								Sign in here
+							</b>
+						</p>
+					</form>
+					
+				</div>
+				
+				<div class="form-wrapper">
+					<h3 style="padding-top: 5%; margin-right: 40%;"><a href='/'> Go back</a> </h3>
+				</div>
+			</div>
+			
+			<!-- END SIGN UP -->
+			<!-- SIGN IN -->
+			<div class="col align-items-center flex-col sign-in">
+				<div class="form-wrapper align-items-center">
+					<form name="frmm" method="post" class="form sign-in">
+						{% csrf_token %}
+						<table class="input-group " >
+							{% for frmm in form1 %}
+							<tr>
+								<td style="padding: 0.5%;">{{frmm}}</td>
+								<td>&nbsp;<span style="color: red; font-size: 70%;">{{frmm.errors|striptags}}</span></td>
+							</tr>
+							{% endfor %}
+							<tr>
+								<td colspan="3"><button style="margin-top: 5%;"  name="login" type="submit">Sign In</button></td>
+							</tr>
+						</table>
+						{% if form1.non_field_errors %}
+						{% for error in form1.non_field_errors %}
+						<p>{{error}}</p>
+						{% endfor %}
+						{% endif %}<br>
+
+						
+						<p>
+							<span>
+								Don't have an account?
+							</span>
+							<b onclick="toggle()" class="pointer">
+								Sign up here
+							</b>
+						</p>
+					</form>
+				</div>					
+
+
+				<div class="form-wrapper">
+					<h3 style="padding-top: 5%; margin-right: 40%;"><a href='/'> Go back</a> </h3>
+				</div>
+			</div>
+			<!-- END SIGN IN -->
+		</div>
+		<!-- END FORM SECTION -->
+		<!-- CONTENT SECTION -->
+		<div class="row content-row">
+			<!-- SIGN IN CONTENT -->
+			<div class="col align-items-center flex-col">
+				<div class="text sign-in">
+					<h2>
+						Welcome
+					</h2>
+	
+				</div>
+				<div class="img sign-in">
+		
+				</div>
+			</div>
+			<!-- END SIGN IN CONTENT -->
+			<!-- SIGN UP CONTENT -->
+			<div class="col align-items-center flex-col">
+				<div class="img sign-up">
+				
+				</div>
+				<div class="text sign-up">
+					<h2>
+						Join with us
+					</h2>
+	
+				</div>
+			</div>
+			<!-- END SIGN UP CONTENT -->
+		</div>
+		
+	
+				
+	</div>		
+    <script src="{% static 'myBooks/js/signup.js' %}"></script>
+</body> 
+</html>
